@@ -54,7 +54,6 @@ then
   sudo hdparm -tT /dev/sde1
   sudo hdparm -tT /dev/sdf1
   sudo hdparm -tT /dev/sdb1
-  
   echo "------------------------------------------------------------------------"
   echo "Check SMART reading on drive..."
   echo "------------------------------------------------------------------------"
@@ -64,4 +63,14 @@ then
   sudo smartctl -a /dev/sde1
   sudo smartctl -a /dev/sdf1
   sudo smartctl -a /dev/sdb1
+  echo "------------------------------------------------------------------------"
+  read -p "Run rkhunter scan? (y/n)"
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+    echo "------------------------------------------------------------------------"
+    echo "Running rkhunter scan..."
+    echo "------------------------------------------------------------------------"
+    sudo rkhunter --check --rwo
+  fi
 fi
