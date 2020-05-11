@@ -103,6 +103,7 @@ then
   sudo sh -c 'date >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d_%H').log'
   sudo rm /home/nn/rsync_logs/backup_tmp.log
   #Copy log to vault
-  sudo cp /home/nn/rsync_logs/backup_*.log /vault/n1/Files/ComputerFiles/2.Linux/Debian/NNBackup\ 192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H)".log
-  sudo rm /home/nn/rsync_logs/backup_*.log
+  sudo cp /home/nn/rsync_logs/backup_*.log /home/nn/rsync_to_vault/backup_"$(date +%Y-%m-%d_%H)".log
+  sudo cp /home/nn/rsync_to_vault/backup_*.log /vault/n1/Files/ComputerFiles/2.Linux/Debian/NNBackup\ 192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H)".log
+  sudo rm /home/nn/rsync_to_vault/backup_*.log
 fi
