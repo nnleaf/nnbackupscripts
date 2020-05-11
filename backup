@@ -14,44 +14,44 @@ echo "------------------------------------------------------------------------"
 echo "Dry-run [vault/n1 > backup1/n1]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n1/ /backup1/n1/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [vault/n1 > backup1/n1]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [vault/n1 > backup1/n1]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 echo "------------------------------------------------------------------------"
 echo "Dry-run [vault/n2 > backup1/n2]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/ /backup1/n2/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [vault/n2 > backup1/n2]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [vault/n2 > backup1/n2]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 echo "------------------------------------------------------------------------"
 echo "Dry-run [vault/n3 > backup1/n3]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n3/ /backup2/n3/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [vault/n3 > backup1/n3]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [vault/n3 > backup1/n3]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 echo "------------------------------------------------------------------------"
 echo "Dry-run [vault/n4 > backup1/n4]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n4/ /backup2/n4/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [vault/n4 > backup1/n4]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [vault/n4 > backup1/n4]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 echo "------------------------------------------------------------------------"
 echo "Dry-run [vault/n1/Music > /music]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [vault/n1/Music > /music]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [vault/n1/Music > /music]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 echo "------------------------------------------------------------------------"
 echo "Dry-run [/vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [/vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [/vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 echo "------------------------------------------------------------------------"
 echo "Dry-run [/vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack]"
 echo "------------------------------------------------------------------------"
 sudo rsync -avnq --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack --log-file=/home/nn/rsync_logs/backup_tmp.log
-sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-sudo sh -c 'echo "Dry-run [/vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+sudo sh -c 'echo "Dry-run [/vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
 
 #Confirmation to run real backup
 read -p "Run the real backup? (y/n)"
@@ -62,44 +62,44 @@ then
   echo "BACKUP [vault/n1 > backup1/n1]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n1/ /backup1/n1/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [vault/n1 > backup1/n1]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [vault/n1 > backup1/n1]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   echo "------------------------------------------------------------------------"
   echo "BACKUP[vault/n2 > backup1/n2]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/ /backup1/n2/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [vault/n2 > backup1/n2]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [vault/n2 > backup1/n2]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   echo "------------------------------------------------------------------------"
   echo "BACKUP [vault/n3 > backup1/n3]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n3/ /backup2/n3/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [vault/n3 > backup1/n3]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [vault/n3 > backup1/n3]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   echo "------------------------------------------------------------------------"
   echo "BACKUP[vault/n4 > backup1/n4]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n4/ /backup2/n4/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [vault/n4 > backup1/n4]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [vault/n4 > backup1/n4]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   echo "------------------------------------------------------------------------"
   echo "BACKUP [vault/n1/Music > /music]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [vault/n1/Music > /music]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [vault/n1/Music > /music]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   echo "------------------------------------------------------------------------"
   echo "BACKUP [/vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [/vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [/vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   echo "------------------------------------------------------------------------"
   echo "BACKUP [/vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack]"
   echo "------------------------------------------------------------------------"
   sudo rsync -av --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack --log-file=/home/nn/rsync_logs/backup_tmp.log
-  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log
-  sudo sh -c 'echo "BACKUP [/vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
-  sudo sh -c 'date >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d').log'
+  sudo tail -n 15 /home/nn/rsync_logs/backup_tmp.log | sudo tee -a /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log
+  sudo sh -c 'echo "BACKUP [/vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack]------------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
+  sudo sh -c 'date >> /home/nn/rsync_logs/backup_$(date '+%Y-%m-%d-%d_%H%M%S').log'
   sudo rm /home/nn/rsync_logs/backup_tmp.log
 fi
