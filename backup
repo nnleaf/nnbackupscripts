@@ -104,4 +104,5 @@ then
   sudo rm /home/nn/rsync_logs/backup_tmp.log
   #Copy log to vault
   sudo cp /home/nn/rsync_logs/backup_*.log /vault/n1/Files/ComputerFiles/2.Linux/Debian/NNBackup\ 192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H)".log
+  sudo rm /home/nn/rsync_logs/backup_*.log
 fi
