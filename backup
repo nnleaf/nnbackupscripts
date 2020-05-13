@@ -10,6 +10,7 @@
 # 20200407 - Added logging
 # 20200413 - Added vmbackup
 # 20200512 - Cleaned up and simplified, removed dry-run logging and added NN stamp
+#
 #Create backup_tmp.log and backup_page.log
 echo -n > /home/nn/rsync_logs/backup_tmp.log
 echo -n > /home/nn/rsync_logs/backup_page.log
@@ -115,7 +116,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
   #Copy backup_page with date stamp for archive on server
   cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   #Copy backup_page to NNBackup logging folder
-  sudo cp /home/nn/rsync_logs/backup_page.log /vault/n1/Files/ComputerFiles/2.Linux/Debian/NNBackup\ 192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
+  sudo cp /home/nn/rsync_logs/backup_page.log /vault/n1/Files/NNServer/NNBackup_192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   #delete temp files
   sudo rm /home/nn/rsync_logs/backup_tmp.log
   sudo rm /home/nn/rsync_logs/backup_page.log
