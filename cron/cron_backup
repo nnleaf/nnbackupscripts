@@ -26,7 +26,7 @@ echo "--------------------------------------"
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup vault/n1/ > backup1/n1/ ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n1/ /backup1/n1/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n1/ /backup1/n1/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 echo "--------------------------------------"
 echo "--[ Backup vault/n2/ > backup1/n2/ ]--"
@@ -34,7 +34,7 @@ echo "--------------------------------------"
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup vault/n2/ > backup1/n2/ ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n2/ /backup1/n2/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n2/ /backup1/n2/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 echo "--------------------------------------"
 echo "--[ Backup vault/n3/ > backup2/n3/ ]--"
@@ -42,7 +42,7 @@ echo "--------------------------------------"
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup vault/n3/ > backup2/n3/ ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n3/ /backup2/n3/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n3/ /backup2/n3/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 echo "--------------------------------------"
 echo "--[ Backup vault/n4/ > backup1/n4/ ]--"
@@ -50,7 +50,7 @@ echo "--------------------------------------"
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup vault/n4/ > backup1/n4/ ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n4/ /backup2/n4/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n4/ /backup2/n4/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 echo "----------------------------------------"
 echo "--[ Backup vault/n1/Music/ > /music/ ]--"
@@ -58,7 +58,7 @@ echo "----------------------------------------"
 sh -c 'echo "----------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup vault/n1/Music/ > /music/ ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "----------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n2/Music/ /music/music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vault/n2/Music/ /music/music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 echo "--------------------------------------------------------------"
 echo "--[ Backup /vmbackup2/NNCore/. > /vmbackup1/Backup/NNCore/ ]--"
@@ -66,7 +66,7 @@ echo "--------------------------------------------------------------"
 sh -c 'echo "--------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup /vmbackup2/NNCore/. > /vmbackup1/Backup/NNCore/ ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 echo "---------------------------------------------------------------"
 echo "--[ Backup /vmbackup2/NNBlack/. > /vmbackup1/Backup/NNBlack ]--"
@@ -74,7 +74,7 @@ echo "---------------------------------------------------------------"
 sh -c 'echo "---------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "--[ Backup /vmbackup2/NNBlack/. > /vmbackup1/Backup/NNBlack ]--" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "---------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-rsync -av --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack --log-file=/home/nn/rsync_logs/backup_tmp.log
+rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack --log-file=/home/nn/rsync_logs/backup_tmp.log
 tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
 #Copy backup_page with date stamp for archive on server
 cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
