@@ -17,31 +17,31 @@ echo -n > /home/nn/rsync_logs/backup_page.log
 echo "-------------------------------------"
 echo "--[ Dry-Run vault/n1 > backup1/n1 ]--"
 echo "-------------------------------------"
-sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n1/ /backup1/n1/
+sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n1/ /backup1/n1/
 echo "-------------------------------------"
 echo "--[ Dry-Run vault/n2 > backup1/n2 ]--"
 echo "-------------------------------------"
-sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/ /backup1/n2/
+sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/ /backup1/n2/
 echo "-------------------------------------"
 echo "--[ Dry-run vault/n3 > backup2/n3 ]--"
 echo "-------------------------------------"
-sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n3/ /backup2/n3/
+sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n3/ /backup2/n3/
 echo "-------------------------------------"
 echo "--[ Dry-run vault/n4 > backup2/n4 ]--"
 echo "-------------------------------------"
-sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n4/ /backup2/n4/
+sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n4/ /backup2/n4/
 echo "---------------------------------------"
 echo "--[ Dry-run vault/n1/Music > /music ]--"
 echo "---------------------------------------"
-sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/
+sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/
 echo "---------------------------------------------------------------"
 echo "--[ Dry-run /vmbackup2/NNCore/. > /vmbackup2/Backup/NNCore/ ]--"
 echo "---------------------------------------------------------------"
-sudo rsync -avnh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/
+sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/
 echo "----------------------------------------------------------------"
 echo "--[ Dry-run /vmbackup2/NNBlack/. > /vmbackup2/Backup/NNBlack ]--"
 echo "----------------------------------------------------------------"
-sudo rsync -avnh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack/
+sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack/
 #Confirmation to run real backup
 read -p "Run the real backup? (y/n)"
 echo
