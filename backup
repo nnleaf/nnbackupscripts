@@ -12,8 +12,8 @@
 # 20200512 - Cleaned up and simplified, removed dry-run logging and added NN stamp
 #
 #Create backup_tmp.log and backup_page.log
-echo -n > /home/nn/rsync_logs/backup_tmp.log
-echo -n > /home/nn/rsync_logs/backup_page.log
+sudo echo -n > /home/nn/rsync_logs/backup_tmp.log
+sudo echo -n > /home/nn/rsync_logs/backup_page.log
 echo "-------------------------------------"
 echo "--[ Dry-Run vault/n1 > backup1/n1 ]--"
 echo "-------------------------------------"
@@ -101,7 +101,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
   sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/backup/. /vmbackup1/backup/ --log-file=/home/nn/rsync_logs/backup_tmp.log
   tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
   #Copy backup_page with date stamp for archive on server
-  cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
+  sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   #Copy backup_page to NNBackup logging folder
   sudo cp /home/nn/rsync_logs/backup_page.log /vault/n1/Files/NNServer/NNBackup_192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   #delete temp files
