@@ -34,14 +34,10 @@ echo "---------------------------------------"
 echo "--[ Dry-run vault/n1/Music > /music ]--"
 echo "---------------------------------------"
 sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/
-echo "---------------------------------------------------------------"
-echo "--[ Dry-run /vmbackup2/NNCore/. > /vmbackup2/Backup/NNCore/ ]--"
-echo "---------------------------------------------------------------"
-sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/
-echo "----------------------------------------------------------------"
-echo "--[ Dry-run /vmbackup2/NNBlack/. > /vmbackup2/Backup/NNBlack ]--"
-echo "----------------------------------------------------------------"
-sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack/
+echo "--------------------------------------------------------"
+echo "--[ Dry-run /vmbackup2/backup/. > /vmbackup1/backup/ ]--"
+echo "--------------------------------------------------------"
+sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/backup/. /vmbackup1/backup/ --log-file=/home/nn/rsync_logs/backup_tmp.log
 #Confirmation to run real backup
 read -p "Run the real backup? (y/n)"
 echo
@@ -96,23 +92,14 @@ if [[ $REPLY =~ ^[Yy]$ ]]
   sh -c 'echo "----------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
   sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
   tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-  echo "--------------------------------------------------------------"
-  echo "--[ Backup /vmbackup2/NNCore/. > /vmbackup1/Backup/NNCore/ ]--"
-  echo "--------------------------------------------------------------"
-  sh -c 'echo "--------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-  sh -c 'echo "--[ Backup /vmbackup2/NNCore/. > /vmbackup1/Backup/NNCore/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-  sh -c 'echo "--------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-  sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNCore/. /vmbackup1/Backup/NNCore/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+  echo "-------------------------------------------------------"
+  echo "--[ Backup /vmbackup2/backup/. > /vmbackup1/backup/ ]--"
+  echo "-------------------------------------------------------"
+  sh -c 'echo "-------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+  sh -c 'echo "--[ Backup /vmbackup2/backup/. > /vmbackup1/backup/ ]--" >> /home/nn/rsync_logs/backup_page.log'
+  sh -c 'echo "-------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+  sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/backup/. /vmbackup1/backup/ --log-file=/home/nn/rsync_logs/backup_tmp.log
   tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-  echo "---------------------------------------------------------------"
-  echo "--[ Backup /vmbackup2/NNBlack/. > /vmbackup1/Backup/NNBlack ]--"
-  echo "---------------------------------------------------------------"
-  sh -c 'echo "---------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-  sh -c 'echo "--[ Backup /vmbackup2/NNBlack/. > /vmbackup1/Backup/NNBlack ]--" >> /home/nn/rsync_logs/backup_page.log'
-  sh -c 'echo "---------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-  sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vmbackup2/NNBlack/. /vmbackup1/Backup/NNBlack --log-file=/home/nn/rsync_logs/backup_tmp.log
-  tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-
   #Copy backup_page with date stamp for archive on server
   cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   #Copy backup_page to NNBackup logging folder
