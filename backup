@@ -120,7 +120,7 @@ if grep -qs '/vault/n1 ' /proc/mounts; then
           #Copy backup_page with date stamp for archive on server
           sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
           #Copy backup_page to NNBackup logging folder
-          sudo cp /home/nn/rsync_logs/backup_page.log /vault/n1/Files/NNServer/NNBackup_192.168.1.102/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
+          sudo cp /home/nn/rsync_logs/backup_page.log /vault/n1/Files/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
         fi
       else
         echo "Error : n4 Unmounted"
