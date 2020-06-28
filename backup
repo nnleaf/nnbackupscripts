@@ -11,128 +11,93 @@
 # 20200413 - Added vmbackup
 # 20200512 - Cleaned up and simplified, removed dry-run logging and added NN stamp
 # 20200616 - Added disk confirmation
+# 20200628 - Migrated Vault to unRAID NNVault
 #
-echo "-----------------------------------"
-echo "--[ Confirming Vault is mounted ]--"
-echo "-----------------------------------"
-if grep -qs '/vault/n1 ' /proc/mounts; then
-  if grep -qs '/vault/n2 ' /proc/mounts; then
-    if grep -qs '/vault/n3 ' /proc/mounts; then
-      if grep -qs '/vault/n4 ' /proc/mounts; then
-        echo "All Vault disks mounted"
-        #Create backup_tmp.log and backup_page.log
-        sudo echo -n > /home/nn/rsync_logs/backup_tmp.log
-        sudo echo -n > /home/nn/rsync_logs/backup_page.log
-        echo "--------------------------------"
-        echo "--[ Run Dry-Run Rsync? (y/n) ]--"
-        echo "--------------------------------"
-        read -p ""
-        if [[ $REPLY =~ ^[Yy]$ ]]
-          then
-          echo "-------------------------------------"
-          echo "--[ Dry-Run vault/n1 > backup1/n1 ]--"
-          echo "-------------------------------------"
-          sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n1/ /backup1/n1/
-          echo "-------------------------------------"
-          echo "--[ Dry-Run vault/n2 > backup1/n2 ]--"
-          echo "-------------------------------------"
-          sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/ /backup1/n2/
-          echo "-------------------------------------"
-          echo "--[ Dry-run vault/n3 > backup2/n3 ]--"
-          echo "-------------------------------------"
-          sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n3/ /backup2/n3/
-          echo "-------------------------------------"
-          echo "--[ Dry-run vault/n4 > backup2/n4 ]--"
-          echo "-------------------------------------"
-          sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n4/ /backup2/n4/
-          echo "---------------------------------------"
-          echo "--[ Dry-run vault/n1/Music > /music ]--"
-          echo "---------------------------------------"
-          sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/
-          echo "--------------------------------------------------------"
-          echo "--[ Dry-run /vmbackup2/backup/. > /vmbackup1/backup/ ]--"
-          echo "--------------------------------------------------------"
-          sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/backup/. /vmbackup1/backup/
-        fi
-        echo "-----------------------------"
-        echo "--[ Run Real Rsync? (y/n) ]--"
-        echo "-----------------------------"
-        read -p ""
-        if [[ $REPLY =~ ^[Yy]$ ]]
-          then
-          #Write initial header
-          sh -c 'echo "     ////     //  ////     //" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "    // //    //  // //    //" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "   //  //   //  //  //   //" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "  //   //  //  //   //  //" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
-          #Runs rsync and writes log to backup_tmp.log
-          echo "--------------------------------------"
-          echo "--[ Backup vault/n1/ > backup1/n1/ ]--"
-          echo "--------------------------------------"
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--[ Backup vault/n1/ > backup1/n1/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n1/ /backup1/n1/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-          tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-          echo "--------------------------------------"
-          echo "--[ Backup vault/n2/ > backup1/n2/ ]--"
-          echo "--------------------------------------"
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--[ Backup vault/n2/ > backup1/n2/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/ /backup1/n2/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-          tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-          echo "--------------------------------------"
-          echo "--[ Backup vault/n3/ > backup2/n3/ ]--"
-          echo "--------------------------------------"
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--[ Backup vault/n3/ > backup2/n3/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n3/ /backup2/n3/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-          tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-          echo "--------------------------------------"
-          echo "--[ Backup vault/n4/ > backup1/n4/ ]--"
-          echo "--------------------------------------"
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--[ Backup vault/n4/ > backup1/n4/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n4/ /backup2/n4/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-          tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-          echo "----------------------------------------"
-          echo "--[ Backup vault/n1/Music/ > /music/ ]--"
-          echo "----------------------------------------"
-          sh -c 'echo "----------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--[ Backup vault/n1/Music/ > /music/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "----------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /vault/n2/Music/ /music/music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-          tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-          echo "-------------------------------------------------------"
-          echo "--[ Backup /vmbackup2/backup/. > /vmbackup1/backup/ ]--"
-          echo "-------------------------------------------------------"
-          sh -c 'echo "-------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "--[ Backup /vmbackup2/backup/. > /vmbackup1/backup/ ]--" >> /home/nn/rsync_logs/backup_page.log'
-          sh -c 'echo "-------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-          sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /vmbackup2/backup/. /vmbackup1/backup/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-          tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-          #Copy backup_page with date stamp for archive on server
-          sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
-          #Copy backup_page to NNBackup logging folder
-          sudo cp /home/nn/rsync_logs/backup_page.log /vault/n1/Files/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
-        fi
-      else
-        echo "Error : n4 Unmounted"
-      fi
-    else
-      echo "Error : n3 Unmounted"
-    fi
-  else
-    echo "Error : n2 Unmounted"
+echo "-------------------------------------"
+echo "--[ Confirming NNVault is mounted ]--"
+echo "-------------------------------------"
+if grep -qs '/nnvault ' /proc/mounts; then
+  echo "NNVault is Mounted"
+  #Create backup_tmp.log and backup_page.log
+  sudo echo -n > /home/nn/rsync_logs/backup_tmp.log
+  sudo echo -n > /home/nn/rsync_logs/backup_page.log
+  echo "--------------------------------"
+  echo "--[ Run Dry-Run Rsync? (y/n) ]--"
+  echo "--------------------------------"
+  read -p ""
+  if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+    echo "----------------------------------------------"
+    echo "--[ Dry-Run /nnvault/Files/. > /backup1/n1 ]--"
+    echo "----------------------------------------------"
+    sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Files/. /backup1/Files
+    echo "-------------------------------------------------------"
+    echo "--[ Dry-run /nnvault/VMBackup/. > /backup1/VMBackup ]--"
+    echo "-------------------------------------------------------"
+    sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/VMBackup/. /backup1/VMBackup
+    echo "----------------------------------------------------------------------"
+    echo "--[ Dry-run /backup1/VMBackup/backup/. > /vmbackup/VMBackup/backup ]--"
+    echo "----------------------------------------------------------------------"
+    sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/VMBackup/backup/. /vmbackup/VMBackup/backup
+    echo "---------------------------------------------"
+    echo "--[ Dry-run /nnvault/Media/Music/. /music ]--"
+    echo "---------------------------------------------"
+    sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Media/Music/. /music/
+  fi
+  echo "-----------------------------"
+  echo "--[ Run Real Rsync? (y/n) ]--"
+  echo "-----------------------------"
+  read -p ""
+  if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+    #Write initial header
+    sh -c 'echo "     ////     //  ////     //" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "    // //    //  // //    //" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "   //  //   //  //  //   //" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "  //   //  //  //   //  //" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
+    #Runs rsync and writes log to backup_tmp.log
+    echo "----------------------------------------------"
+    echo "--[ Dry-Run /nnvault/Files/. > /backup1/n1 ]--"
+    echo "----------------------------------------------"
+    sh -c 'echo "----------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "--[ Dry-Run /nnvault/Files/. > /backup1/n1 ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "----------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Files/. /backup1/Files --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "-------------------------------------------------------"
+    echo "--[ Dry-run /nnvault/VMBackup/. > /backup1/VMBackup ]--"
+    echo "-------------------------------------------------------"
+    sh -c 'echo "-------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "--[ Dry-run /nnvault/VMBackup/. > /backup1/VMBackup ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "-------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/VMBackup/. /backup1/VMBackup --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "----------------------------------------------------------------------"
+    echo "--[ Dry-run /backup1/VMBackup/backup/. > /vmbackup/VMBackup/backup ]--"
+    echo "----------------------------------------------------------------------"
+    sh -c 'echo "----------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "--[ Dry-run /backup1/VMBackup/backup/. > /vmbackup/VMBackup/backup ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "----------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/VMBackup/backup/. /vmbackup/VMBackup/backup --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "---------------------------------------------"
+    echo "--[ Dry-run /nnvault/Media/Music/. /music ]--"
+    echo "---------------------------------------------"
+    sh -c 'echo "---------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "--[ Dry-run /nnvault/Media/Music/. /music ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "---------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Media/Music/. /music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    #Copy backup_page with date stamp for archive on server
+    sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
+    #Copy backup_page to NNBackup logging folder
+    sudo cp /home/nn/rsync_logs/backup_page.log /nnvault/Files/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   fi
 else
-  echo "Error : n1 Unmounted"
+  echo "Error : NNVault Not Mounted"
 fi
 #delete temp files
 sudo rm /home/nn/rsync_logs/backup_tmp.log
