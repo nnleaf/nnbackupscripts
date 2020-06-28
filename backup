@@ -34,11 +34,11 @@ if grep -qs '/nnvault ' /proc/mounts; then
     echo "-------------------------------------------------------"
     echo "--[ Dry-run /nnvault/VMBackup/. > /backup1/VMBackup ]--"
     echo "-------------------------------------------------------"
-    sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/VMBackup/. /backup1/VMBackup
+    sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/VMBackup/. /backup1/VMBackup
     echo "----------------------------------------------------------------------"
     echo "--[ Dry-run /backup1/VMBackup/backup/. > /vmbackup/VMBackup/backup ]--"
     echo "----------------------------------------------------------------------"
-    sudo rsync -anh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/VMBackup/backup/. /vmbackup/VMBackup/backup
+    sudo rsync -anh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/VMBackup/backup/. /vmbackup/VMBackup/backup
     echo "---------------------------------------------"
     echo "--[ Dry-run /nnvault/Media/Music/. /music ]--"
     echo "---------------------------------------------"
@@ -73,7 +73,7 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sh -c 'echo "------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
     sh -c 'echo "--[ Backup /nnvault/VMBackup/. > /backup1/VMBackup ]--" >> /home/nn/rsync_logs/backup_page.log'
     sh -c 'echo "------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-    sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/VMBackup/. /backup1/VMBackup --log-file=/home/nn/rsync_logs/backup_tmp.log
+    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/VMBackup/. /backup1/VMBackup --log-file=/home/nn/rsync_logs/backup_tmp.log
     tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
     echo "---------------------------------------------------------------------"
     echo "--[ Backup /backup1/VMBackup/backup/. > /vmbackup/VMBackup/backup ]--"
@@ -81,7 +81,7 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sh -c 'echo "---------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
     sh -c 'echo "--[ Backup /backup1/VMBackup/backup/. > /vmbackup/VMBackup/backup ]--" >> /home/nn/rsync_logs/backup_page.log'
     sh -c 'echo "---------------------------------------------------------------------" >> /home/nn/rsync_logs/backup_page.log'
-    sudo rsync -avh --progress --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/VMBackup/backup/. /vmbackup/VMBackup/backup --log-file=/home/nn/rsync_logs/backup_tmp.log
+    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/VMBackup/backup/. /vmbackup/VMBackup/backup --log-file=/home/nn/rsync_logs/backup_tmp.log
     tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
     echo "--------------------------------------------"
     echo "--[ Backup /nnvault/Media/Music/. /music ]--"
