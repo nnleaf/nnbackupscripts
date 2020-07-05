@@ -41,7 +41,7 @@ if grep -qs '/nnvault ' /proc/mounts; then
     echo "-------------------------"
     echo "--[ Dry-run VMBackups ]--"
     echo "-------------------------"
-    sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/Backup/VMBackup/backup. /vmbackup/VMBackup/backup
+    sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/Backup/VMBackup/backup/. /vmbackup/VMBackup/backup
     echo "---------------------"
     echo "--[ Dry-run Music ]--"
     echo "---------------------"
@@ -84,7 +84,7 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sh -c 'echo "-----------------------" >> /home/nn/rsync_logs/backup_page.log'
     sh -c 'echo "--[ rSync VMBackups ]--" >> /home/nn/rsync_logs/backup_page.log'
     sh -c 'echo "-----------------------" >> /home/nn/rsync_logs/backup_page.log'
-    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/Backup/VMBackup/backup. /vmbackup/VMBackup/backup --log-file=/home/nn/rsync_logs/backup_tmp.log
+    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/Backup/VMBackup/backup/. /vmbackup/VMBackup/backup --log-file=/home/nn/rsync_logs/backup_tmp.log
     tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
     echo "-------------------"
     echo "--[ rSync Music ]--"
