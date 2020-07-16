@@ -13,6 +13,7 @@
 # 20200616 - Added disk confirmation
 # 20200628 - Migrated Vault to unRAID NNVault
 # 20200701 - Disk mounts within the script
+# 20200716 - Added individual VM Backups to 500GB HDD
 #
 #Mount NNVault
 sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
@@ -38,10 +39,6 @@ if grep -qs '/nnvault ' /proc/mounts; then
     echo "--[ Dry-run Backups ]--"
     echo "-----------------------"
     sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/Backup/. /backup1/Backup
-    echo "-------------------------"
-    echo "--[ Dry-run VMBackups ]--"
-    echo "-------------------------"
-    sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/Backup/VMBackup/backup/. /vmbackup/VMBackup/backup
     echo "---------------------"
     echo "--[ Dry-run Music ]--"
     echo "---------------------"
@@ -78,14 +75,6 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sh -c 'echo "---------------------" >> /home/nn/rsync_logs/backup_page.log'
     sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/Backup/. /backup1/Backup --log-file=/home/nn/rsync_logs/backup_tmp.log
     tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-    echo "-----------------------"
-    echo "--[ rSync VMBackups ]--"
-    echo "-----------------------"
-    sh -c 'echo "-----------------------" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "--[ rSync VMBackups ]--" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "-----------------------" >> /home/nn/rsync_logs/backup_page.log'
-    sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /backup1/Backup/VMBackup/backup/. /vmbackup/VMBackup/backup --log-file=/home/nn/rsync_logs/backup_tmp.log
-    tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
     echo "-------------------"
     echo "--[ rSync Music ]--"
     echo "-------------------"
@@ -94,11 +83,144 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sh -c 'echo "-------------------" >> /home/nn/rsync_logs/backup_page.log'
     sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Media/Music/. /music/ --log-file=/home/nn/rsync_logs/backup_tmp.log
     tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-    #Copy backup_page with date stamp for archive on server
-    sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
-    #Copy backup_page to NNBackup logging folder
-    sudo cp /home/nn/rsync_logs/backup_page.log /nnvault/Backup/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   fi
+  echo "-------------------------------"
+  echo "--[ Dry-Run VMBackup? (y/n) ]--"
+  echo "-------------------------------"
+  read -p ""
+  if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+    #Dry-run VMBackups rSync
+    echo "--[ Dry-run rSync Core.Dashboard ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.Dashboard/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.Dashboard/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.Dashboard/$VMBACKUP/
+    echo "--[ Dry-run rSync Core.PFSense ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PFSense/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PFSense/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PFSense/$VMBACKUP/
+    echo "--[ Dry-run rSync Core.PiHole1 ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PiHole1/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole1/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole1/$VMBACKUP/
+    echo "--[ Dry-run rSync Core.PiHole2 ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PiHole2/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole2/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole2/$VMBACKUP/
+    echo "--[ Dry-run rSync Core.RelayVPN ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.RelayVPN/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.RelayVPN/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.RelayVPN/$VMBACKUP/
+    echo "--[ Dry-run rSync Core.UniFi ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.UniFi/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.UniFi/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.UniFi/$VMBACKUP/
+    echo "--[ Dry-run rSync DMZ.ReverseProxy ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/DMZ.ReverseProxy/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/DMZ.ReverseProxy/$VMBACKUP/. /vmbackup/VMBackup/backup/DMZ.ReverseProxy/$VMBACKUP/
+    echo "--[ Dry-run rSync HOME.Genesis ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.Genesis/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.Genesis/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.Genesis/$VMBACKUP/
+    echo "--[ Dry-run rSync HOME.Plex ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.Plex/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.Plex/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.Plex/$VMBACKUP/
+    echo "--[ Dry-run rSync WEB.BookStack ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.BookStack/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.BookStack/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.BookStack/$VMBACKUP/
+    echo "--[ Dry-run rSync WEB.Index ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Index/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Index/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Index/$VMBACKUP/
+    echo "--[ Dry-run rSync WEB.NextCloud ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.NextCloud/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/
+    echo "--[ Dry-run rSync WEB.Wordpress ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wordpress/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/
+  fi
+  echo "---------------------------------"
+  echo "--[ Run rSync VMBackup? (y/n) ]--"
+  echo "---------------------------------"
+  read -p ""
+  if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+    #Get latest folder within VM directory, delete previous backups, and rSync latest backup
+    echo "--[ Backup Core.Dashboard ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.Dashboard/ | head -n1`
+    sh -c 'echo "--[ Backup Core.Dashboard ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.Dashboard/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.Dashboard/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.Dashboard/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup Core.PFSense ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PFSense/ | head -n1`
+    sh -c 'echo "--[ Backup Core.PFSense ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.PFSense/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PFSense/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PFSense/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup Core.PiHole1 ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PiHole1/ | head -n1`
+    sh -c 'echo "--[ Backup Core.PiHole1 ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.PiHole1/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole1/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole1/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup Core.PiHole2 ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PiHole2/ | head -n1`
+    sh -c 'echo "--[ Backup Core.PiHole2 ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.PiHole2/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole2/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole2/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup Core.RelayVPN ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.RelayVPN/ | head -n1`
+    sh -c 'echo "--[ Backup Core.RelayVPN ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.RelayVPN/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.RelayVPN/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.RelayVPN/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup Core.UniFi ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.UniFi/ | head -n1`
+    sh -c 'echo "--[ Backup Core.UniFi ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.UniFi/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.UniFi/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.UniFi/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup DMZ.ReverseProxy ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/DMZ.ReverseProxy/ | head -n1`
+    sh -c 'echo "--[ Backup DMZ.ReverseProxy ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/DMZ.ReverseProxy/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/DMZ.ReverseProxy/$VMBACKUP/. /vmbackup/VMBackup/backup/DMZ.ReverseProxy/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup HOME.Genesis ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.Genesis/ | head -n1`
+    sh -c 'echo "--[ Backup HOME.Genesis ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/HOME.Genesis/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.Genesis/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.Genesis/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup HOME.Plex ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.Plex/ | head -n1`
+    sh -c 'echo "--[ Backup HOME.Plex ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/HOME.Plex/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.Plex/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.Plex/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup WEB.BookStack ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.BookStack/ | head -n1`
+    sh -c 'echo "--[ Backup WEB.BookStack ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/WEB.BookStack/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.BookStack/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.BookStack/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup WEB.Index ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Index/ | head -n1`
+    sh -c 'echo "--[ Backup WEB.Index ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/WEB.Index/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Index/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Index/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup WEB.NextCloud ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.NextCloud/ | head -n1`
+    sh -c 'echo "--[ Backup WEB.NextCloud ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/WEB.NextCloud/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup WEB.Wordpress ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wordpress/ | head -n1`
+    sh -c 'echo "--[ Backup WEB.Wordpress ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/WEB.Wordpress/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+  fi
+  #Copy backup_page with date stamp for archive on server
+  sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
+  #Copy backup_page to NNBackup logging folder
+  sudo cp /home/nn/rsync_logs/backup_page.log /nnvault/Backup/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
 else
   echo "Error : NNVault Not Mounted"
 fi
