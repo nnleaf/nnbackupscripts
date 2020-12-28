@@ -118,6 +118,9 @@ if grep -qs '/nnvault ' /proc/mounts; then
     echo "--[ Dry-run rSync HOME.Plex ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.Plex/ | head -n1`
     sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.Plex/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.Plex/$VMBACKUP/
+    echo "--[ Dry-run rSync HOME.RemoteBackup ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.RemoteBackup/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.RemoteBackup/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.RemoteBackup/$VMBACKUP/
     echo "--[ Dry-run rSync WEB.BookStack ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.BookStack/ | head -n1`
     sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.BookStack/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.BookStack/$VMBACKUP/
