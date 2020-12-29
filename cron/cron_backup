@@ -106,6 +106,12 @@ if grep -qs '/nnvault ' /proc/mounts; then
   sudo rm -rv /vmbackup/VMBackup/backup/HOME.Plex/* >> /home/nn/rsync_logs/backup_page.log
   sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.Plex/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.Plex/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
   tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+  echo "--[ Backup HOME.RemoteBackup ]--"
+  VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/HOME.RemoteBackup/ | head -n1`
+  sh -c 'echo "--[ Backup HOME.RemoteBackup ]--" >> /home/nn/rsync_logs/backup_page.log'
+  sudo rm -rv /vmbackup/VMBackup/backup/HOME.RemoteBackup/* >> /home/nn/rsync_logs/backup_page.log
+  sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/HOME.RemoteBackup/$VMBACKUP/. /vmbackup/VMBackup/backup/HOME.RemoteBackup/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+  tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
   echo "--[ Backup WEB.BookStack ]--"
   VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.BookStack/ | head -n1`
   sh -c 'echo "--[ Backup WEB.BookStack ]--" >> /home/nn/rsync_logs/backup_page.log'
