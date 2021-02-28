@@ -76,6 +76,12 @@ if grep -qs '/nnvault ' /proc/mounts; then
   sudo rm -rv /vmbackup/VMBackup/backup/Core.PiHole2/* >> /home/nn/rsync_logs/backup_page.log
   sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole2/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole2/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
   tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+  echo "--[ Backup WEB.Wallabag ]--"
+  VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wallabag/ | head -n1`
+  sh -c 'echo "--[ Backup WEB.Wallabag ]--" >> /home/nn/rsync_logs/backup_page.log'
+  sudo rm -rv /vmbackup/VMBackup/backup/WEB.Wallabag/* >> /home/nn/rsync_logs/backup_page.log
+  sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wallabag/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wallabag/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+  tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
   echo "--[ Backup Core.RelayVPN ]--"
   VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.RelayVPN/ | head -n1`
   sh -c 'echo "--[ Backup Core.RelayVPN ]--" >> /home/nn/rsync_logs/backup_page.log'

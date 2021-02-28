@@ -14,6 +14,7 @@
 # 20200628 - Migrated Vault to unRAID NNVault
 # 20200701 - Disk mounts within the script
 # 20200716 - Added individual VM Backups to 500GB HDD
+# 20210228 - Added Wallabag and Proxy VM
 #
 #Mount NNVault
 sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
@@ -103,6 +104,9 @@ if grep -qs '/nnvault ' /proc/mounts; then
     echo "--[ Dry-run rSync Core.PiHole2 ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.PiHole2/ | head -n1`
     sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole2/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole2/$VMBACKUP/
+    echo "--[ Dry-run rSync Core.Proxy ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.Proxy/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.Proxy/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.Proxy/$VMBACKUP/
     echo "--[ Dry-run rSync Core.RelayVPN ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.RelayVPN/ | head -n1`
     sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.RelayVPN/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.RelayVPN/$VMBACKUP/
@@ -130,6 +134,9 @@ if grep -qs '/nnvault ' /proc/mounts; then
     echo "--[ Dry-run rSync WEB.NextCloud ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.NextCloud/ | head -n1`
     sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/
+    echo "--[ Dry-run rSync WEB.Wallabag ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wallabag/ | head -n1`
+    sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wallabag/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wallabag/$VMBACKUP/
     echo "--[ Dry-run rSync WEB.Wordpress ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wordpress/ | head -n1`
     sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/
@@ -164,6 +171,12 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sh -c 'echo "--[ Backup Core.PiHole2 ]--" >> /home/nn/rsync_logs/backup_page.log'
     sudo rm -rv /vmbackup/VMBackup/backup/Core.PiHole2/* >> /home/nn/rsync_logs/backup_page.log
     sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.PiHole2/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.PiHole2/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
+    tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+    echo "--[ Backup Core.Proxy ]--"
+    VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.Proxy/ | head -n1`
+    sh -c 'echo "--[ Backup Core.Proxy ]--" >> /home/nn/rsync_logs/backup_page.log'
+    sudo rm -rv /vmbackup/VMBackup/backup/Core.Proxy/* >> /home/nn/rsync_logs/backup_page.log
+    sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.Proxy/$VMBACKUP/. /vmbackup/VMBackup/backup/Core.Proxy/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
     tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
     echo "--[ Backup Core.RelayVPN ]--"
     VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.RelayVPN/ | head -n1`
