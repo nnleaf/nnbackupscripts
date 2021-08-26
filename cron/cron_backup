@@ -136,18 +136,6 @@ if grep -qs '/nnvault ' /proc/mounts; then
   sudo rm -rv /vmbackup/VMBackup/backup/WEB.NextCloud/* >> /home/nn/rsync_logs/backup_page.log
   sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
   tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-  echo "--[ Backup WEB.Wallabag ]--"
-  VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wallabag/ | head -n1`
-  sh -c 'echo "--[ Backup WEB.Wallabag ]--" >> /home/nn/rsync_logs/backup_page.log'
-  sudo rm -rv /vmbackup/VMBackup/backup/WEB.Wallabag/* >> /home/nn/rsync_logs/backup_page.log
-  sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wallabag/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wallabag/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-  echo "--[ Backup WEB.Wordpress ]--"
-  VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.Wordpress/ | head -n1`
-  sh -c 'echo "--[ Backup WEB.Wordpress ]--" >> /home/nn/rsync_logs/backup_page.log'
-  sudo rm -rv /vmbackup/VMBackup/backup/WEB.Wordpress/* >> /home/nn/rsync_logs/backup_page.log
-  sudo rsync -avh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/. /vmbackup/VMBackup/backup/WEB.Wordpress/$VMBACKUP/ --log-file=/home/nn/rsync_logs/backup_tmp.log
-  tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
   #Copy backup_page with date stamp for archive on server
   cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   #Copy backup_page to NNBackup logging folder
