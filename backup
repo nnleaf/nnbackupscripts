@@ -131,9 +131,6 @@ if grep -qs '/nnvault ' /proc/mounts; then
       sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/. /backup2 --log-file=/home/nn/rsync_logs/backup_tmp.log
       tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
     fi
-
-
-
     echo "----------------------------------"
     echo "--[ Dry-Run Core Backup? (y/n) ]--"
     echo "----------------------------------"
@@ -148,37 +145,9 @@ if grep -qs '/nnvault ' /proc/mounts; then
       echo "--[ Dry-run Core - NhuY ]--"
       echo "---------------------------"
       sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nhuy/. /backup3/NhuY
-    fi
-    echo "-----------------------------------"
-    echo "--[ Run Real Core Backup? (y/n) ]--"
-    echo "-----------------------------------"
-    read -p ""
-    if [[ $REPLY =~ ^[Yy]$ ]]
-      then
-      echo "--------------------------"
-      echo "--[ rSync Core - Files ]--"
-      echo "--------------------------"
-      sh -c 'echo "--------------------------" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "--[ rSync Core - Files ]--" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "--------------------------" >> /home/nn/rsync_logs/backup_page.log'
-      sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Files/. /backup3/Files --log-file=/home/nn/rsync_logs/backup_tmp.log
-      tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-      echo "-------------------------"
-      echo "--[ rSync Core - NhuY ]--"
-      echo "-------------------------"
-      sh -c 'echo "-------------------------" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "--[ rSync Core - NhuY ]--" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "-------------------------" >> /home/nn/rsync_logs/backup_page.log'
-      sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nhuy/. /backup3/NhuY --log-file=/home/nn/rsync_logs/backup_tmp.log
-      tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-    fi
-    echo "-------------------------------"
-    echo "--[ Dry-Run VMBackup? (y/n) ]--"
-    echo "-------------------------------"
-    read -p ""
-    if [[ $REPLY =~ ^[Yy]$ ]]
-      then
-      #Dry-run VMBackups rSync
+      echo "-----------------------------"
+      echo "--[ rSync Core - VMBackup ]--"
+      echo "-----------------------------"
       echo "--[ Dry-run rSync Core.Dashboard ]--"
       VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.Dashboard/ | head -n1`
       sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/Core.Dashboard/$VMBACKUP/. /backup3/VMBackup/backup/Core.Dashboard/$VMBACKUP/
@@ -222,12 +191,31 @@ if grep -qs '/nnvault ' /proc/mounts; then
       VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/WEB.NextCloud/ | head -n1`
       sudo rsync -avnh --progress --delete --stats --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/Backup/VMBackup/backup/WEB.NextCloud/$VMBACKUP/. /backup3/VMBackup/backup/WEB.NextCloud/$VMBACKUP/
     fi
-    echo "---------------------------------"
-    echo "--[ Run rSync VMBackup? (y/n) ]--"
-    echo "---------------------------------"
+    echo "-----------------------------------"
+    echo "--[ Run Real Core Backup? (y/n) ]--"
+    echo "-----------------------------------"
     read -p ""
     if [[ $REPLY =~ ^[Yy]$ ]]
       then
+      echo "--------------------------"
+      echo "--[ rSync Core - Files ]--"
+      echo "--------------------------"
+      sh -c 'echo "--------------------------" >> /home/nn/rsync_logs/backup_page.log'
+      sh -c 'echo "--[ rSync Core - Files ]--" >> /home/nn/rsync_logs/backup_page.log'
+      sh -c 'echo "--------------------------" >> /home/nn/rsync_logs/backup_page.log'
+      sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Files/. /backup3/Files --log-file=/home/nn/rsync_logs/backup_tmp.log
+      tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+      echo "-------------------------"
+      echo "--[ rSync Core - NhuY ]--"
+      echo "-------------------------"
+      sh -c 'echo "-------------------------" >> /home/nn/rsync_logs/backup_page.log'
+      sh -c 'echo "--[ rSync Core - NhuY ]--" >> /home/nn/rsync_logs/backup_page.log'
+      sh -c 'echo "-------------------------" >> /home/nn/rsync_logs/backup_page.log'
+      sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nhuy/. /backup3/NhuY --log-file=/home/nn/rsync_logs/backup_tmp.log
+      tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+      sh -c 'echo "-----------------------------" >> /home/nn/rsync_logs/backup_page.log'
+      sh -c 'echo "--[ rSync Core - VMBackup ]--" >> /home/nn/rsync_logs/backup_page.log'
+      sh -c 'echo "-----------------------------" >> /home/nn/rsync_logs/backup_page.log'
       #Get latest folder within VM directory, delete previous backups, and rSync latest backup
       echo "--[ Backup Core.Dashboard ]--"
       VMBACKUP=`ls -t /backup1/Backup/VMBackup/backup/Core.Dashboard/ | head -n1`
