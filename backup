@@ -314,9 +314,11 @@ if grep -qs '/nnvault ' /proc/mounts; then
     sudo cp /home/nn/rsync_logs/backup_page.log /nnvault/Backup/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   else
     echo "Error : NhuY Not Mounted"
+    sh -c 'echo "NhuY Not Mounted" >> /home/nn/rsync_logs/backup_page.log'
   fi
 else
   echo "Error : NNVault Not Mounted"
+  sh -c 'echo "NNVault Not Mounted" >> /home/nn/rsync_logs/backup_page.log'
 fi
 #delete temp files
 sudo rm /home/nn/rsync_logs/backup_tmp.log

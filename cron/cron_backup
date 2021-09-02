@@ -184,9 +184,11 @@ if grep -qs '/nnvault ' /proc/mounts; then
     tail -n 2 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
   else
     echo "Error : NhuY Not Mounted"
+    sh -c 'echo "NhuY Not Mounted" >> /home/nn/rsync_logs/backup_page.log'
   fi
 else
   echo "Error : NNVault Not Mounted"
+  sh -c 'echo "NNVault Not Mounted" >> /home/nn/rsync_logs/backup_page.log'
 fi
 #delete temp files
 rm /home/nn/rsync_logs/backup_tmp.log
