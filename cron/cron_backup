@@ -6,31 +6,37 @@
 # //    // //  //    // //
 #//     ////  //     ////
 #
+#########################################################################################
+#
 # 20200512 - Created cron_backup for cronjob
 # 20200616 - Added disk confirmation
 # 20200701 - Disk mounts within the script
 # 20200716 - Added individual VM Backups to 500GB HDD
 # 20210827 - Updated for 6TB drives
 #
+#########################################################################################
+#
+#Create backup_tmp.log and backup_page.log
+echo -n > /home/nn/rsync_logs/backup_tmp.log
+echo -n > /home/nn/rsync_logs/backup_page.log
+#Write initial header
+sh -c 'echo "     ////     //  ////     //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "    // //    //  // //    //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "   //  //   //  //  //   //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "  //   //  //  //   //  //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
 #Mount NNVault
 mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
 #Mount NhuY
-sudo mount -t cifs //10.0.100.10/NhuY /nhuy -o credentials=/home/nn/.smbnnvault
+mount -t cifs //10.0.100.10/NhuY /nhuy -o credentials=/home/nn/.smbnnvault
 if grep -qs '/nnvault ' /proc/mounts; then
   echo "NNVault is Mounted"
+  sh -c 'echo "NNVault is Mounted" >> /home/nn/rsync_logs/backup_page.log'
   if grep -qs '/nhuy ' /proc/mounts; then
     echo "NhuY is Mounted"
-    #Create backup_tmp.log and backup_page.log
-    echo -n > /home/nn/rsync_logs/backup_tmp.log
-    echo -n > /home/nn/rsync_logs/backup_page.log
-    #Write initial header
-    sh -c 'echo "     ////     //  ////     //" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "    // //    //  // //    //" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "   //  //   //  //  //   //" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "  //   //  //  //   //  //" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
-    sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
+    sh -c 'echo "NhuY is Mounted\n" >> /home/nn/rsync_logs/backup_page.log'
     #Runs rsync and writes log to backup_tmp.log
     echo "-----------------------------"
     echo "--[ rSync NNVault - Files ]--"

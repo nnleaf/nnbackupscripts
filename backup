@@ -6,6 +6,8 @@
 # //    // //  //    // //
 #//     ////  //     ////
 #
+########################################################################################
+#
 # 20200329 - Vault to NNBackup rsync backup script
 # 20200407 - Added logging
 # 20200413 - Added vmbackup
@@ -17,6 +19,19 @@
 # 20210228 - Added Wallabag and Proxy VM
 # 20210827 - Changed disk layout and backup process
 #
+#########################################################################################
+#
+#Create backup_tmp.log and backup_page.log
+sudo echo -n > /home/nn/rsync_logs/backup_tmp.log
+sudo echo -n > /home/nn/rsync_logs/backup_page.log
+#Write initial header
+sh -c 'echo "     ////     //  ////     //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "    // //    //  // //    //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "   //  //   //  //  //   //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "  //   //  //  //   //  //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
+sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
 #Mount NNVault
 sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
 #Mount NhuY
@@ -26,11 +41,13 @@ echo "--[ Confirm if NNVault is mounted ]--"
 echo "-------------------------------------"
 if grep -qs '/nnvault ' /proc/mounts; then
   echo "NNVault is Mounted"
+  sh -c 'echo "NNVault is Mounted" >> /home/nn/rsync_logs/backup_page.log'
   echo "----------------------------------"
   echo "--[ Confirm if NhuY is mounted ]--"
   echo "----------------------------------"
   if grep -qs '/nhuy ' /proc/mounts; then
     echo "NhuY is Mounted"
+    sh -c 'echo "NhuY is Mounted\n" >> /home/nn/rsync_logs/backup_page.log'
     echo "--------------------------------"
     echo "--[ Run Dry-Run Rsync? (y/n) ]--"
     echo "--------------------------------"
@@ -60,17 +77,6 @@ if grep -qs '/nnvault ' /proc/mounts; then
     read -p ""
     if [[ $REPLY =~ ^[Yy]$ ]]
       then
-      #Create backup_tmp.log and backup_page.log
-      sudo echo -n > /home/nn/rsync_logs/backup_tmp.log
-      sudo echo -n > /home/nn/rsync_logs/backup_page.log
-      #Write initial header
-      sh -c 'echo "     ////     //  ////     //" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "    // //    //  // //    //" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "   //  //   //  //  //   //" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "  //   //  //  //   //  //" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
-      sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
       #Runs rsync and writes log to backup_tmp.log
       echo "-----------------------------"
       echo "--[ rSync NNVault - Files ]--"
