@@ -32,9 +32,9 @@ sh -c 'echo " //    // //  //    // //" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "//     ////  //     ////\n" >> /home/nn/rsync_logs/backup_page.log'
 sh -c 'echo "NNBackup ran backup script on `date`\n" >> /home/nn/rsync_logs/backup_page.log'
 #Mount NNVault
-sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault
+sudo mount -t cifs //10.0.100.10/NNVault /nnvault -o credentials=/home/nn/.smbnnvault,noserverino,vers=3.1.1
 #Mount NhuY
-sudo mount -t cifs //10.0.100.10/NhuY /nhuy -o credentials=/home/nn/.smbnnvault
+sudo mount -t cifs //10.0.100.10/NhuY /nhuy -o credentials=/home/nn/.smbnnvault,noserverino,vers=3.1.1
 echo "-------------------------------------"
 echo "--[ Confirm if NNVault is mounted ]--"
 echo "-------------------------------------"
