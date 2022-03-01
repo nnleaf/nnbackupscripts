@@ -17,6 +17,7 @@
 # 20210228 - Added Wallabag and Proxy VM
 # 20210827 - Changed disk layout and backup process
 # 20220111 - Migrated NNBackup from Q6600/ATI to R230
+# 20220301 - Condensed Dry-Run and Real-Run to one-shot
 #
 #########################################################################################
 #
@@ -69,6 +70,10 @@ if grep -qs '/nnvault ' /proc/mounts; then
       echo "--[ Dry-run Music ]--"
       echo "---------------------"
       sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Media/Music/. /backup1/music
+      echo "-----------------------------"
+      echo "--[ Dry-Run Mirror Backup ]--"
+      echo "-----------------------------"
+      sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/. /backup2
     fi
     echo "-----------------------------"
     echo "--[ Run Real Rsync? (y/n) ]--"
@@ -109,24 +114,6 @@ if grep -qs '/nnvault ' /proc/mounts; then
       sh -c 'echo "-------------------" >> /home/nn/rsync_logs/backup_page.log'
       sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Media/Music/. /backup1/music --log-file=/home/nn/rsync_logs/backup_tmp.log
       tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
-    fi
-    echo "------------------------------------"
-    echo "--[ Dry-Run Mirror Backup? (y/n) ]--"
-    echo "------------------------------------"
-    read -p ""
-    if [[ $REPLY =~ ^[Yy]$ ]]
-      then
-      echo "-----------------------------"
-      echo "--[ Dry-Run Mirror Backup ]--"
-      echo "-----------------------------"
-      sudo rsync -avnh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/. /backup2
-    fi
-    echo "-------------------------------------"
-    echo "--[ Run Real Mirror Backup? (y/n) ]--"
-    echo "-------------------------------------"
-    read -p ""
-    if [[ $REPLY =~ ^[Yy]$ ]]
-      then
       echo "---------------------------"
       echo "--[ rSync Mirror Backup ]--"
       echo "---------------------------"
@@ -134,12 +121,13 @@ if grep -qs '/nnvault ' /proc/mounts; then
       sh -c 'echo "--[ rSync Mirror Backup ]--" >> /home/nn/rsync_logs/backup_page.log'
       sh -c 'echo "---------------------------" >> /home/nn/rsync_logs/backup_page.log'
       sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /backup1/. /backup2 --log-file=/home/nn/rsync_logs/backup_tmp.log
+      #Logging Backup
       tail -n 15 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+      #Copy backup_page with date stamp for archive on server
+      sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
+      #Copy backup_page to NNBackup logging folder
+      sudo cp /home/nn/rsync_logs/backup_page.log /nnvault/Backup/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
     fi
-    #Copy backup_page with date stamp for archive on server
-    sudo cp /home/nn/rsync_logs/backup_page.log /home/nn/rsync_logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
-    #Copy backup_page to NNBackup logging folder
-    sudo cp /home/nn/rsync_logs/backup_page.log /nnvault/Backup/NNServer/NNBackup/Logs/backup_"$(date +%Y-%m-%d_%H%M%S)".log
   else
     echo "Error : NhuY Not Mounted"
     sh -c 'echo "NhuY Not Mounted" >> /home/nn/rsync_logs/backup_page.log'
@@ -154,3 +142,11 @@ sudo rm /home/nn/rsync_logs/backup_page.log
 #Unmount NNVault
 sudo umount -t cifs //10.0.100.10/NNVault
 sudo umount -t cifs //10.0.100.10/NhuY
+echo "----------------------------"
+echo "--[ Shutdown R230? (y/n) ]--"
+echo "----------------------------"
+read -p ""
+if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+  sh /home/nn/poweroff
+fi
