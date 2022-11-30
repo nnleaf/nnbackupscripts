@@ -89,7 +89,7 @@ if grep -qs '/nnvault ' /proc/mounts; then
       sh -c 'echo "--[ rSync NNVault - Files ]--" >> /home/nn/rsync_logs/backup_page.log'
       sh -c 'echo "-----------------------------" >> /home/nn/rsync_logs/backup_page.log'
       sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="sudo rsync" /nnvault/Files/. /backup1/NNVault/Files --log-file=/home/nn/rsync_logs/backup_tmp.log
-      tail -n 16 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+      tail -n 17 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
       echo "-------------------------------"
       echo "--[ rSync NNVault - Backups ]--"
       echo "-------------------------------"
@@ -97,7 +97,7 @@ if grep -qs '/nnvault ' /proc/mounts; then
       sh -c 'echo "--[ rSync NNVault - Backups ]--" >> /home/nn/rsync_logs/backup_page.log'
       sh -c 'echo "-------------------------------" >> /home/nn/rsync_logs/backup_page.log'
       sudo rsync -avh --progress --delete --stats --ignore-existing --ignore-errors -s -e "ssh" --rsync-path="rsync" /nnvault/Backup/. /backup1/NNVault/Backup --log-file=/home/nn/rsync_logs/backup_tmp.log
-      tail -n 16 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
+      tail -n 17 /home/nn/rsync_logs/backup_tmp.log | tee -a /home/nn/rsync_logs/backup_page.log
       echo "----------------------------"
       echo "--[ rSync NhuY - Backups ]--"
       echo "----------------------------"
